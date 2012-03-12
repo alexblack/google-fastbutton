@@ -11,4 +11,4 @@ An implementation of google's FastButton javascript from http://code.google.com/
         x$('#your-button').fastClick(function(e) {
           alert('fast clicked!');
         });
-111
+```
