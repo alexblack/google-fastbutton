@@ -1,13 +1,15 @@
-var evt = {
-  /** For IE8 and earlier compatibility: https://developer.mozilla.org/en/DOM/element.addEventListener */
-  addListenener: function(el, type, listener, useCapture) {
-    if (el.addEventListener) {
-      el.evt.addListener(type, listener, useCapture);
-    } else if (el.attachEvent)  {
-      el.attachEvent(type, listener);
+var evt = function() {
+  return {
+    /** For IE8 and earlier compatibility: https://developer.mozilla.org/en/DOM/element.addEventListener */
+    addListener: function(el, type, listener, useCapture) {
+      if (el.addEventListener) {
+        el.addEventListener(type, listener, useCapture);
+      } else if (el.attachEvent)  {
+        el.attachEvent(type, listener);
+      }
     }
-  }
-};
+  };
+}();
   
 (function() {
 
