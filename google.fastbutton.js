@@ -3,6 +3,15 @@
  * Also see: http://stackoverflow.com/questions/6300136/trying-to-implement-googles-fast-button 
  */
 
+/** For IE8 and earlier compatibility: https://developer.mozilla.org/en/DOM/element.addEventListener */
+function addEventListener(el, type, listener, useCapture) {
+  if (el.addEventListener) {
+    el.addEventListener(type, listener, useCapture);
+  } else if (el.attachEvent)  {
+    el.attachEvent(type, listener);
+  }
+}
+
 (function() {
   /* Construct the FastButton with a reference to the element and click handler. */
   this.FastButton = function(element, handler) {
@@ -10,8 +19,8 @@
     this.element = element;
     this.handler = handler;
     //console.log(this);
-    element.addEventListener('touchstart', this, false);
-    element.addEventListener('click', this, false);
+    addEventListener(element, 'touchstart', this, false);
+    addEventListener(element, 'click', this, false);
   };
   
   /* acts as an event dispatcher */
@@ -29,8 +38,8 @@
    chance to handle the same click event. This is executed at the beginning of touch. */
   this.FastButton.prototype.onTouchStart = function(event) {
     event.stopPropagation();
-    this.element.addEventListener('touchend', this, false);
-    document.body.addEventListener('touchmove', this, false);
+    addEventListener(this.element, 'touchend', this, false);
+    addEventListener(document.body, 'touchmove', this, false);
     this.startX = event.touches[0].clientX;
     this.startY = event.touches[0].clientY;
   };
@@ -48,7 +57,7 @@
     this.reset();
     var result = this.handler(event);
     if (event.type == 'touchend') {
-      //clickbuster.preventGhostClick(this.startX, this.startY);
+      clickbuster.preventGhostClick(this.startX, this.startY);
     }
     return result;
   };
@@ -89,5 +98,6 @@
   };  
 })(this);
 
-document.addEventListener('click', clickbuster.onClick, true);
+
+addEventListener(document, 'click', clickbuster.onClick, true);
 clickbuster.coordinates = [];
