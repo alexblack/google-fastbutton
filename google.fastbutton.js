@@ -1,26 +1,29 @@
-/** 
- * From: http://code.this.com/mobile/articles/fast_buttons.html
- * Also see: http://stackoverflow.com/questions/6300136/trying-to-implement-googles-fast-button 
- */
-
-/** For IE8 and earlier compatibility: https://developer.mozilla.org/en/DOM/element.addEventListener */
-function addEventListener(el, type, listener, useCapture) {
-  if (el.addEventListener) {
-    el.addEventListener(type, listener, useCapture);
-  } else if (el.attachEvent)  {
-    el.attachEvent(type, listener);
+var evt = {
+  /** For IE8 and earlier compatibility: https://developer.mozilla.org/en/DOM/element.addEventListener */
+  addListenener: function(el, type, listener, useCapture) {
+    if (el.addEventListener) {
+      el.evt.addListener(type, listener, useCapture);
+    } else if (el.attachEvent)  {
+      el.attachEvent(type, listener);
+    }
   }
-}
-
+};
+  
 (function() {
+
+  /** 
+   * From: http://code.this.com/mobile/articles/fast_buttons.html
+   * Also see: http://stackoverflow.com/questions/6300136/trying-to-implement-googles-fast-button 
+   */
+ 
   /* Construct the FastButton with a reference to the element and click handler. */
   this.FastButton = function(element, handler) {
     //console.log('fastbutton init');
     this.element = element;
     this.handler = handler;
     //console.log(this);
-    addEventListener(element, 'touchstart', this, false);
-    addEventListener(element, 'click', this, false);
+    evt.addListener(element, 'touchstart', this, false);
+    evt.addListener(element, 'click', this, false);
   };
   
   /* acts as an event dispatcher */
@@ -38,8 +41,8 @@ function addEventListener(el, type, listener, useCapture) {
    chance to handle the same click event. This is executed at the beginning of touch. */
   this.FastButton.prototype.onTouchStart = function(event) {
     event.stopPropagation();
-    addEventListener(this.element, 'touchend', this, false);
-    addEventListener(document.body, 'touchmove', this, false);
+    evt.addListener(this.element, 'touchend', this, false);
+    evt.addListener(document.body, 'touchmove', this, false);
     this.startX = event.touches[0].clientX;
     this.startY = event.touches[0].clientY;
   };
@@ -99,5 +102,5 @@ function addEventListener(el, type, listener, useCapture) {
 })(this);
 
 
-addEventListener(document, 'click', clickbuster.onClick, true);
+evt.addListener(document, 'click', clickbuster.onClick, true);
 clickbuster.coordinates = [];
