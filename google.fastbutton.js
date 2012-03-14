@@ -12,7 +12,6 @@ var evt = function() {
 }();
   
 (function() {
-
   /** 
    * From: http://code.this.com/mobile/articles/fast_buttons.html
    * Also see: http://stackoverflow.com/questions/6300136/trying-to-implement-googles-fast-button 
@@ -73,18 +72,18 @@ var evt = function() {
   };
   
   this.clickbuster = function() {
-    //console.log('init clickbuster');
+    console.log('init clickbuster');
   }
   
   /* Call preventGhostClick to bust all click events that happen within 25px of
    the provided x, y coordinates in the next 2.5s. */
   this.clickbuster.preventGhostClick = function(x, y) {
     clickbuster.coordinates.push(x, y);
-    window.setTimeout(this.clickbuster.pop, 2500);
+    window.setTimeout(clickbuster.pop, 2500);
   };
   
   this.clickbuster.pop = function() {
-    this.clickbuster.coordinates.splice(0, 2);
+    clickbuster.coordinates.splice(0, 2);
   };
   
   /* If we catch a click event inside the given radius and time threshold then we call
