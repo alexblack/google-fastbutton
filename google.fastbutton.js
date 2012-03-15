@@ -6,6 +6,8 @@
     } else {
       // this was tricky to get working, see: http://stackoverflow.com/questions/5198845/javascript-this-losing-context-in-ie
       el.attachEvent('on' + type, function(e) {
+        console.log(type);
+        console.log(listener);
         listener.handleEvent(window.event, listener);
       });
     }
@@ -96,11 +98,14 @@
       var y = clickbuster.coordinates[i + 1];
       if (Math.abs(event.clientX - x) < 25 && Math.abs(event.clientY - y) < 25) {
         event.stopPropagation ? event.stopPropagation() : (event.cancelBubble=true);
-        eevent.preventDefault ? event.preventDefault() : (event.returnValue=false);
+        event.preventDefault ? event.preventDefault() : (event.returnValue=false);
       }
     }
   };
     
-  addListener(document, 'click', clickbuster.onClick, true);
-  clickbuster.coordinates = [];
+  if (isTouch) {
+    // Don't need to use our custom addListener function since we only bust clicks on touch devices
+    document.addEventListener('click', clickbuster.onClick, true);
+    clickbuster.coordinates = [];
+  }
 })(this);
