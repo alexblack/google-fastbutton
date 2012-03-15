@@ -1,20 +1,16 @@
-var evt = function() {
-  return {
-    /** For IE8 and earlier compatibility: https://developer.mozilla.org/en/DOM/element.addEventListener */
-    addListener: function(el, type, listener, useCapture) {
-      if (el.addEventListener) {
-        el.addEventListener(type, listener, useCapture);
-      } else {
-        // this was tricky to get working, see: http://stackoverflow.com/questions/5198845/javascript-this-losing-context-in-ie
-        el.attachEvent('on' + type, function(e) {
-          listener.handleEvent(window.event, listener);
-        });
-      }
-    }
-  };
-}();
-  
 (function() {
+  /** For IE8 and earlier compatibility: https://developer.mozilla.org/en/DOM/element.addEventListener */
+  function addListener(el, type, listener, useCapture) {
+    if (el.addEventListener) {
+      el.addEventListener(type, listener, useCapture);
+    } else {
+      // this was tricky to get working, see: http://stackoverflow.com/questions/5198845/javascript-this-losing-context-in-ie
+      el.attachEvent('on' + type, function(e) {
+        listener.handleEvent(window.event, listener);
+      });
+    }
+  }
+  
   /** 
    * From: http://code.this.com/mobile/articles/fast_buttons.html
    * Also see: http://stackoverflow.com/questions/6300136/trying-to-implement-googles-fast-button 
@@ -27,9 +23,9 @@ var evt = function() {
     this.element = element;
     this.handler = handler;
     if (isTouch) {
-      evt.addListener(element, 'touchstart', this, false);
+      addListener(element, 'touchstart', this, false);
     }
-    evt.addListener(element, 'click', this, false);
+    addListener(element, 'click', this, false);
   };
   
   /* acts as an event dispatcher */
@@ -47,8 +43,8 @@ var evt = function() {
    chance to handle the same click event. This is executed at the beginning of touch. */
   this.FastButton.prototype.onTouchStart = function(event) {
     event.stopPropagation ? event.stopPropagation() : (event.cancelBubble=true);
-    evt.addListener(this.element, 'touchend', this, false);
-    evt.addListener(document.body, 'touchmove', this, false);
+    addListener(this.element, 'touchend', this, false);
+    addListener(document.body, 'touchmove', this, false);
     this.startX = event.touches[0].clientX;
     this.startY = event.touches[0].clientY;
   };
@@ -78,9 +74,7 @@ var evt = function() {
     }
   };
   
-  this.clickbuster = function() {
-    console.log('init clickbuster');
-  }
+  this.clickbuster = function() {}
   
   /* Call preventGhostClick to bust all click events that happen within 25px of
    the provided x, y coordinates in the next 2.5s. */
@@ -105,9 +99,8 @@ var evt = function() {
         eevent.preventDefault ? event.preventDefault() : (event.returnValue=false);
       }
     }
-  };  
+  };
+    
+  addListener(document, 'click', clickbuster.onClick, true);
+  clickbuster.coordinates = [];
 })(this);
-
-
-evt.addListener(document, 'click', clickbuster.onClick, true);
-clickbuster.coordinates = [];
