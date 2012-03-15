@@ -4,8 +4,11 @@ var evt = function() {
     addListener: function(el, type, listener, useCapture) {
       if (el.addEventListener) {
         el.addEventListener(type, listener, useCapture);
-      } else if (el.attachEvent)  {
-        el.attachEvent(type, listener);
+      } else {
+        // this was tricky to get working, see: http://stackoverflow.com/questions/5198845/javascript-this-losing-context-in-ie
+        el.attachEvent('on' + type, function(e) {
+          listener.handleEvent(window.event, listener);
+        });
       }
     }
   };
@@ -17,13 +20,15 @@ var evt = function() {
    * Also see: http://stackoverflow.com/questions/6300136/trying-to-implement-googles-fast-button 
    */
  
+  var isTouch = "ontouchstart" in window;
+
   /* Construct the FastButton with a reference to the element and click handler. */
   this.FastButton = function(element, handler) {
-    //console.log('fastbutton init');
     this.element = element;
     this.handler = handler;
-    //console.log(this);
-    evt.addListener(element, 'touchstart', this, false);
+    if (isTouch) {
+      evt.addListener(element, 'touchstart', this, false);
+    }
     evt.addListener(element, 'click', this, false);
   };
   
@@ -41,7 +46,7 @@ var evt = function() {
    touchend events. Calling stopPropagation guarantees that other behaviors don’t get a
    chance to handle the same click event. This is executed at the beginning of touch. */
   this.FastButton.prototype.onTouchStart = function(event) {
-    event.stopPropagation();
+    event.stopPropagation ? event.stopPropagation() : (event.cancelBubble=true);
     evt.addListener(this.element, 'touchend', this, false);
     evt.addListener(document.body, 'touchmove', this, false);
     this.startX = event.touches[0].clientX;
@@ -57,7 +62,7 @@ var evt = function() {
   
   /* Invoke the actual click handler and prevent ghost clicks if this was a touchend event. */
   this.FastButton.prototype.onClick = function(event) {
-    event.stopPropagation();
+    event.stopPropagation ? event.stopPropagation() : (event.cancelBubble=true);
     this.reset();
     var result = this.handler(event);
     if (event.type == 'touchend') {
@@ -67,8 +72,10 @@ var evt = function() {
   };
   
   this.FastButton.prototype.reset = function() {
-    this.element.removeEventListener('touchend', this, false);
-    document.body.removeEventListener('touchmove', this, false);
+    if (isTouch) {
+      this.element.removeEventListener('touchend', this, false);
+      document.body.removeEventListener('touchmove', this, false);
+    }
   };
   
   this.clickbuster = function() {
@@ -91,12 +98,11 @@ var evt = function() {
    from being activated. */
   this.clickbuster.onClick = function(event) {
     for (var i = 0; i < clickbuster.coordinates.length; i += 2) {
-      //console.log(this);
       var x = clickbuster.coordinates[i];
       var y = clickbuster.coordinates[i + 1];
       if (Math.abs(event.clientX - x) < 25 && Math.abs(event.clientY - y) < 25) {
-        event.stopPropagation();
-        event.preventDefault();
+        event.stopPropagation ? event.stopPropagation() : (event.cancelBubble=true);
+        eevent.preventDefault ? event.preventDefault() : (event.returnValue=false);
       }
     }
   };  
