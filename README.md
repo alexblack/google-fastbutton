@@ -9,7 +9,7 @@ An implementation of [Google's FastButton javascript](http://code.google.com/mob
 
 ## Usage
 ``` js
-new FastButton(el, function() {
+new FastButton(document.getElementById('your-button'), function() {
   alert('click');
 });
 ````
