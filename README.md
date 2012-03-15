@@ -4,6 +4,7 @@ An implementation of [Google's FastButton javascript](http://code.google.com/mob
 
 - google.fastbutton.js The javascript, no dependencies
 - xui.google.fastbutton.js Provides a nice event handler using [XUI](http://xuijs.com/)
+- Doesn't break in IE6-8
 
 ## XUI Usage
 
