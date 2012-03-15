@@ -7,10 +7,16 @@ An implementation of [Google's FastButton javascript](http://code.google.com/mob
 - google.fastbutton.js The javascript, no dependencies
 - xui.google.fastbutton.js Provides a nice event handler using [XUI](http://xuijs.com/)
 
+## Usage
+``` js
+new FastButton(el, function() {
+  alert('click');
+});
+````
 ## XUI Usage
 
 ``` js
-        x$('#your-button').fastClick(function(e) {
-          alert('fast clicked!');
-        });
+x$('#your-button').fastClick(function(e) {
+  alert('fast clicked!');
+});
 ```
