@@ -6,8 +6,6 @@
     } else {
       // this was tricky to get working, see: http://stackoverflow.com/questions/5198845/javascript-this-losing-context-in-ie
       el.attachEvent('on' + type, function(e) {
-        console.log(type);
-        console.log(listener);
         listener.handleEvent(window.event, listener);
       });
     }
@@ -105,7 +103,7 @@
     
   if (isTouch) {
     // Don't need to use our custom addListener function since we only bust clicks on touch devices
-    document.addEventListener('click', clickbuster.onClick, true);
+    //document.addEventListener('click', clickbuster.onClick, true);
     clickbuster.coordinates = [];
   }
 })(this);
