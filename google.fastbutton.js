@@ -103,7 +103,7 @@
     
   if (isTouch) {
     // Don't need to use our custom addListener function since we only bust clicks on touch devices
-    //document.addEventListener('click', clickbuster.onClick, true);
+    document.addEventListener('click', clickbuster.onClick, true);
     clickbuster.coordinates = [];
   }
 })(this);
