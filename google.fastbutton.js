@@ -60,7 +60,8 @@
   this.FastButton.prototype.onClick = function(event) {
     event.stopPropagation ? event.stopPropagation() : (event.cancelBubble=true);
     this.reset();
-    var result = this.handler(event);
+    // Use .call to call the method so that we have the correct "this": https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function/call
+    var result = this.handler.call(this.element, event);
     if (event.type == 'touchend') {
       clickbuster.preventGhostClick(this.startX, this.startY);
     }
