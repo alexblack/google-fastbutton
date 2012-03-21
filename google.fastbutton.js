@@ -19,13 +19,13 @@
   var isTouch = "ontouchstart" in window;
 
   /* Construct the FastButton with a reference to the element and click handler. */
-  this.FastButton = function(element, handler) {
+  this.FastButton = function(element, handler, useCapture) {
     this.element = element;
     this.handler = handler;
-    if (isTouch) {
-      addListener(element, 'touchstart', this, false);
-    }
-    addListener(element, 'click', this, false);
+    this.useCapture = useCapture;
+    if (isTouch) 
+      addListener(element, 'touchstart', this, this.useCapture);    
+    addListener(element, 'click', this, this.useCapture);
   };
   
   /* acts as an event dispatcher */
@@ -43,8 +43,8 @@
    chance to handle the same click event. This is executed at the beginning of touch. */
   this.FastButton.prototype.onTouchStart = function(event) {
     event.stopPropagation ? event.stopPropagation() : (event.cancelBubble=true);
-    addListener(this.element, 'touchend', this, false);
-    addListener(document.body, 'touchmove', this, false);
+    addListener(this.element, 'touchend', this, this.useCapture);
+    addListener(document.body, 'touchmove', this, this.useCapture);
     this.startX = event.touches[0].clientX;
     this.startY = event.touches[0].clientY;
   };
@@ -70,8 +70,8 @@
   
   this.FastButton.prototype.reset = function() {
     if (isTouch) {
-      this.element.removeEventListener('touchend', this, false);
-      document.body.removeEventListener('touchmove', this, false);
+      this.element.removeEventListener('touchend', this, this.useCapture);
+      document.body.removeEventListener('touchmove', this, this.useCapture);
     }
   };
   
