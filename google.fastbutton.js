@@ -1,31 +1,47 @@
 (function() {
-  /** For IE8 and earlier compatibility: https://developer.mozilla.org/en/DOM/element.addEventListener */
-  function addListener(el, type, listener, useCapture) {
-    if (el.addEventListener) {
-      el.addEventListener(type, listener, useCapture);
-    } else {
-      // this was tricky to get working, see: http://stackoverflow.com/questions/5198845/javascript-this-losing-context-in-ie
-      el.attachEvent('on' + type, function(e) {
-        listener.handleEvent(window.event, listener);
-      });
-    }
-  }
-  
   /** 
    * From: http://code.this.com/mobile/articles/fast_buttons.html
    * Also see: http://stackoverflow.com/questions/6300136/trying-to-implement-googles-fast-button 
    */
- 
+   
+  /** For IE8 and earlier compatibility: https://developer.mozilla.org/en/DOM/element.addEventListener */
+  function addListener(el, type, listener, useCapture) {
+    if (el.addEventListener) { 
+      el.addEventListener(type, listener, useCapture);
+      return { 
+        destroy: function() { el.removeEventListener(type, listener, useCapture); } 
+      };
+    } else {      
+      // see: http://stackoverflow.com/questions/5198845/javascript-this-losing-context-in-ie
+      var handler = function(e) { listener.handleEvent(window.event, listener); }
+      el.attachEvent('on' + type, handler);
+      
+      return { 
+        destroy: function() { el.detachEvent('on' + type, handler); }
+      };
+    }   
+  }
+  
   var isTouch = "ontouchstart" in window;
 
   /* Construct the FastButton with a reference to the element and click handler. */
   this.FastButton = function(element, handler, useCapture) {
+    // collect functions to call to cleanup events 
+    this.events = [];
+    this.touchEvents = [];
     this.element = element;
     this.handler = handler;
     this.useCapture = useCapture;
     if (isTouch) 
-      addListener(element, 'touchstart', this, this.useCapture);    
-    addListener(element, 'click', this, this.useCapture);
+      this.events.push(addListener(element, 'touchstart', this, this.useCapture));    
+    this.events.push(addListener(element, 'click', this, this.useCapture));
+  };
+  
+  /* Remove event handling when no longer needed for this button */
+  this.FastButton.prototype.destroy = function() {
+    for (i = this.events.length - 1; i >= 0; i -= 1)
+      this.events[i].destroy();    
+    this.events = this.touchEvents = this.element = this.handler = this.fastButton = null;
   };
   
   /* acts as an event dispatcher */
@@ -43,8 +59,8 @@
    chance to handle the same click event. This is executed at the beginning of touch. */
   this.FastButton.prototype.onTouchStart = function(event) {
     event.stopPropagation ? event.stopPropagation() : (event.cancelBubble=true);
-    addListener(this.element, 'touchend', this, this.useCapture);
-    addListener(document.body, 'touchmove', this, this.useCapture);
+    this.touchEvents.push(addListener(this.element, 'touchend', this, this.useCapture));
+    this.touchEvents.push(addListener(document.body, 'touchmove', this, this.useCapture));
     this.startX = event.touches[0].clientX;
     this.startY = event.touches[0].clientY;
   };
@@ -62,17 +78,15 @@
     this.reset();
     // Use .call to call the method so that we have the correct "this": https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function/call
     var result = this.handler.call(this.element, event);
-    if (event.type == 'touchend') {
-      clickbuster.preventGhostClick(this.startX, this.startY);
-    }
+    if (event.type == 'touchend') 
+      clickbuster.preventGhostClick(this.startX, this.startY);    
     return result;
   };
   
   this.FastButton.prototype.reset = function() {
-    if (isTouch) {
-      this.element.removeEventListener('touchend', this, this.useCapture);
-      document.body.removeEventListener('touchmove', this, this.useCapture);
-    }
+    for (i = this.touchEvents.length - 1; i >= 0; i -= 1) 
+      this.touchEvents[i].destroy();    
+    this.touchEvents = [];
   };
   
   this.clickbuster = function() {}
