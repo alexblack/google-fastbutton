@@ -6,6 +6,7 @@ An implementation of [Google's FastButton javascript](http://code.google.com/mob
 - Touch support tested in Android 2.3 (Nexus S) and IOS 5 (iPad 2)
 - google.fastbutton.js The javascript, no dependencies
 - xui.google.fastbutton.js Provides a nice event handler using [XUI](http://xuijs.com/)
+- Added a method destroy() to cleanup event handlers etc
 
 ## Usage
 ``` js
