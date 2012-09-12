@@ -5,6 +5,7 @@
 		},
 		teardown: function () {
 		   $(this).data('fastClick').destroy();
+		   $(this).removeData('fastClick');
 		},
 		handler: function (e) {
 			// convert native event to jquery event
