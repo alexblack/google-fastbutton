@@ -12,7 +12,12 @@
 			e = $.event.fix(e);
 			e.type = 'fastClick';
 		
+			/*
+			event.handle is deprecated and removed as of version 1.9
+			use event.dispatch instead,
 			$.event.handle.apply(this, arguments);
+			*/
+			$.event.dispatch.apply(this, arguments);
 		}
 	};
 
