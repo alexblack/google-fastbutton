@@ -1,4 +1,6 @@
 (function() {
+  'use strict';
+
   /**
    * From: http://code.this.com/mobile/articles/fast_buttons.html
    * Also see: http://stackoverflow.com/questions/6300136/trying-to-implement-googles-fast-button
