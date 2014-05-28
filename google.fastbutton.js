@@ -69,9 +69,17 @@
   // that other behaviors don’t get a chance to handle the same click event.
   // This is executed at the beginning of touch.
   this.FastButton.prototype.onTouchStart = function(event) {
-    event.stopPropagation ? event.stopPropagation() : (event.cancelBubble=true);
-    this.touchEvents.push(addListener(this.element, 'touchend', this, this.useCapture));
-    this.touchEvents.push(addListener(document.body, 'touchmove', this, this.useCapture));
+    if (event.stopPropagation) {
+      event.stopPropagation();
+    } else {
+      event.cancelBubble = true;
+    }
+    this.touchEvents.push(
+      addListener(this.element, 'touchend', this, this.useCapture)
+    );
+    this.touchEvents.push(
+      addListener(document.body, 'touchmove', this, this.useCapture)
+    );
     this.startX = event.touches[0].clientX;
     this.startY = event.touches[0].clientY;
   };
@@ -87,7 +95,11 @@
   // Invoke the actual click handler and prevent ghost clicks if
   // this was a touchend event.
   this.FastButton.prototype.onClick = function(event) {
-    event.stopPropagation ? event.stopPropagation() : (event.cancelBubble=true);
+    if (event.stopPropagation) {
+      event.stopPropagation();
+    } else {
+      event.cancelBubble = true;
+    }
     this.reset();
     // Use .call to call the method so that we have the correct "this": https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function/call
     var result = this.handler.call(this.element, event);
