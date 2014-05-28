@@ -18,7 +18,10 @@
     } else {
       // see:
       // http://stackoverflow.com/questions/5198845/javascript-this-losing-context-in-ie
-      var handler = function(e) { listener.handleEvent(window.event, listener); }
+      var handler = function() {
+        listener.handleEvent(window.event, listener);
+      };
+
       el.attachEvent('on' + type, handler);
 
       return {
