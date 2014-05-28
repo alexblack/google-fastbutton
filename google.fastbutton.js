@@ -138,8 +138,16 @@
         var x = clickbuster.coordinates[i];
         var y = clickbuster.coordinates[i + 1];
         if (Math.abs(event.clientX - x) < 25 && Math.abs(event.clientY - y) < 25) {
-          event.stopPropagation ? event.stopPropagation() : (event.cancelBubble=true);
-          event.preventDefault ? event.preventDefault() : (event.returnValue=false);
+          if (event.stopPropagation) {
+            event.stopPropagation();
+          } else {
+            event.cancelBubble = true;
+          }
+          if (event.preventDefault) {
+            event.preventDefault();
+          } else {
+            event.returnValue = false;
+          }
         }
       }
     }
