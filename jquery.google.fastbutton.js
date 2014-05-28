@@ -1,4 +1,6 @@
 (function($) {
+  'use strict';
+
   $.event.special.fastClick = {
     setup: function () {
       $(this).data('fastClick', new FastButton(this, $.event.special.fastClick.handler));
