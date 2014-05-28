@@ -57,10 +57,18 @@
   // acts as an event dispatcher
   this.FastButton.prototype.handleEvent = function(event) {
     switch (event.type) {
-      case 'touchstart': this.onTouchStart(event); break;
-      case 'touchmove': this.onTouchMove(event); break;
-      case 'touchend': this.onClick(event); break;
-      case 'click': this.onClick(event); break;
+      case 'touchstart':
+        this.onTouchStart(event);
+        break;
+      case 'touchmove':
+        this.onTouchMove(event);
+        break;
+      case 'touchend':
+        this.onClick(event);
+        break;
+      case 'click':
+        this.onClick(event);
+        break;
     }
   };
 
