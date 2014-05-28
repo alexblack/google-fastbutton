@@ -1,5 +1,7 @@
 # Google FastButton
 
+[![Build Status](https://travis-ci.org/alexsomeoddpilot/google-fastbutton.svg?branch=master)](https://travis-ci.org/alexsomeoddpilot/google-fastbutton)
+
 An implementation of [Google's FastButton javascript](http://code.google.com/mobile/articles/fast_buttons.html), to avoid the 300ms touch delay on Android and iOS devices.  Code forked from: http://stackoverflow.com/questions/6300136/trying-to-implement-googles-fast-button
 
 - Doesn't break in IE6-8, Chrome 17, Firefox 11, or Windows Phone 7.5
