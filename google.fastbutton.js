@@ -87,7 +87,8 @@
   // When/if touchmove event is invoked, check if the user has dragged past
   // the threshold of 10px.
   this.FastButton.prototype.onTouchMove = function(event) {
-    if (Math.abs(event.touches[0].clientX - this.startX) > 10 || Math.abs(event.touches[0].clientY - this.startY) > 10) {
+    if (Math.abs(event.touches[0].clientX - this.startX) > 10 ||
+      Math.abs(event.touches[0].clientY - this.startY) > 10) {
       this.reset(); //if he did, then cancel the touch event
     }
   };
@@ -101,7 +102,8 @@
       event.cancelBubble = true;
     }
     this.reset();
-    // Use .call to call the method so that we have the correct "this": https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function/call
+    // Use .call to call the method so that we have the correct "this":
+    // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function/call
     var result = this.handler.call(this.element, event);
     if (event.type == 'touchend') {
       clickbuster.preventGhostClick(this.startX, this.startY);
