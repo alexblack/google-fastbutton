@@ -48,7 +48,7 @@
 
   // Remove event handling when no longer needed for this button
   this.FastButton.prototype.destroy = function() {
-    for (i = this.events.length - 1; i >= 0; i -= 1) {
+    for (var i = this.events.length - 1; i >= 0; i -= 1) {
       this.events[i].destroy();
     }
     this.events = this.touchEvents = this.element = this.handler = this.fastButton = null;
@@ -98,7 +98,7 @@
   };
 
   this.FastButton.prototype.reset = function() {
-    for (i = this.touchEvents.length - 1; i >= 0; i -= 1) {
+    for (var i = this.touchEvents.length - 1; i >= 0; i -= 1) {
       this.touchEvents[i].destroy();
     }
     this.touchEvents = [];
