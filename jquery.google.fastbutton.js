@@ -3,7 +3,10 @@
 
   $.event.special.fastClick = {
     setup: function () {
-      $(this).data('fastClick', new FastButton(this, $.event.special.fastClick.handler));
+      $(this).data(
+        'fastClick',
+        new window.FastButton(this, $.event.special.fastClick.handler)
+      );
     },
     teardown: function () {
       $(this).data('fastClick').destroy();
