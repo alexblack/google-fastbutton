@@ -105,7 +105,7 @@
     // Use .call to call the method so that we have the correct "this":
     // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function/call
     var result = this.handler.call(this.element, event);
-    if (event.type == 'touchend') {
+    if (event.type === 'touchend') {
       clickbuster.preventGhostClick(this.startX, this.startY);
     }
     return result;
