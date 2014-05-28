@@ -1,0 +1,23 @@
+{
+  "name": "fast-button",
+  "version": "0.0.0",
+  "description": "An implementation of [Google's FastButton javascript](http://code.google.com/mobile/articles/fast_buttons.html), to avoid the 300ms touch delay on Android and iOS devices.  Code forked from: http://stackoverflow.com/questions/6300136/trying-to-implement-googles-fast-button",
+  "main": "Gruntfile.js",
+  "scripts": {
+    "test": "grunt travis"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://alex%40someoddpilot.com@github.com/alexsomeoddpilot/google-fastbutton.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alexsomeoddpilot/google-fastbutton/issues"
+  },
+  "homepage": "https://github.com/alexsomeoddpilot/google-fastbutton",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "jshint": "^2.5.1"
+  }
+}
