@@ -35,7 +35,7 @@
   var isTouch = 'ontouchstart' in window;
 
   // Construct the FastButton with a reference to the element and click handler.
-  this.FastButton = function(element, handler, useCapture) {
+  window.FastButton = function (element, handler, useCapture) {
     // collect functions to call to cleanup events
     this.events = [];
     this.touchEvents = [];
@@ -51,19 +51,18 @@
   };
 
   // Remove event handling when no longer needed for this button
-  this.FastButton.prototype.destroy = function() {
+  window.FastButton.prototype.destroy = function() {
     for (var i = this.events.length - 1; i >= 0; i -= 1) {
       this.events[i].destroy();
     }
     this.events =
     this.touchEvents =
     this.element =
-    this.handler =
-    this.fastButton = null;
+    this.handler = null;
   };
 
   // acts as an event dispatcher
-  this.FastButton.prototype.handleEvent = function(event) {
+  window.FastButton.prototype.handleEvent = function(event) {
     switch (event.type) {
       case 'touchstart':
         this.onTouchStart(event);
@@ -84,7 +83,7 @@
   // to touchmove and touchend events. Calling stopPropagation guarantees
   // that other behaviors don’t get a chance to handle the same click event.
   // This is executed at the beginning of touch.
-  this.FastButton.prototype.onTouchStart = function(event) {
+  window.FastButton.prototype.onTouchStart = function(event) {
     if (event.stopPropagation) {
       event.stopPropagation();
     } else {
@@ -102,7 +101,7 @@
 
   // When/if touchmove event is invoked, check if the user has dragged past
   // the threshold of 10px.
-  this.FastButton.prototype.onTouchMove = function(event) {
+  window.FastButton.prototype.onTouchMove = function(event) {
     if (Math.abs(event.touches[0].clientX - this.startX) > 10 ||
       Math.abs(event.touches[0].clientY - this.startY) > 10) {
       this.reset(); //if he did, then cancel the touch event
@@ -111,7 +110,7 @@
 
   // Invoke the actual click handler and prevent ghost clicks if
   // this was a touchend event.
-  this.FastButton.prototype.onClick = function(event) {
+  window.FastButton.prototype.onClick = function(event) {
     if (event.stopPropagation) {
       event.stopPropagation();
     } else {
@@ -127,7 +126,7 @@
     return result;
   };
 
-  this.FastButton.prototype.reset = function() {
+  window.FastButton.prototype.reset = function() {
     for (var i = this.touchEvents.length - 1; i >= 0; i -= 1) {
       this.touchEvents[i].destroy();
     }
