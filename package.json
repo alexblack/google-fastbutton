@@ -18,6 +18,7 @@
   "homepage": "https://github.com/alexsomeoddpilot/google-fastbutton",
   "devDependencies": {
     "grunt": "^0.4.5",
-    "jshint": "^2.5.1"
+    "jshint": "^2.5.1",
+    "grunt-contrib-jshint": "^0.10.0"
   }
 }
