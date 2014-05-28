@@ -118,29 +118,29 @@
     this.touchEvents = [];
   };
 
-  this.clickbuster = function() {}
+  var clickbuster = {
+    // Call preventGhostClick to bust all click events that happen within
+    // 25px of the provided x, y coordinates in the next 2.5s.
+    preventGhostClick: function (x, y) {
+      clickbuster.coordinates.push(x, y);
+      window.setTimeout(clickbuster.pop, 2500);
+    },
 
-  // Call preventGhostClick to bust all click events that happen within
-  // 25px of the provided x, y coordinates in the next 2.5s.
-  this.clickbuster.preventGhostClick = function(x, y) {
-    clickbuster.coordinates.push(x, y);
-    window.setTimeout(clickbuster.pop, 2500);
-  };
+    pop: function () {
+      clickbuster.coordinates.splice(0, 2);
+    },
 
-  this.clickbuster.pop = function() {
-    clickbuster.coordinates.splice(0, 2);
-  };
-
-  // If we catch a click event inside the given radius and time threshold
-  // then we call stopPropagation and preventDefault. Calling preventDefault
-  // will stop links from being activated.
-  this.clickbuster.onClick = function(event) {
-    for (var i = 0; i < clickbuster.coordinates.length; i += 2) {
-      var x = clickbuster.coordinates[i];
-      var y = clickbuster.coordinates[i + 1];
-      if (Math.abs(event.clientX - x) < 25 && Math.abs(event.clientY - y) < 25) {
-        event.stopPropagation ? event.stopPropagation() : (event.cancelBubble=true);
-        event.preventDefault ? event.preventDefault() : (event.returnValue=false);
+    // If we catch a click event inside the given radius and time threshold
+    // then we call stopPropagation and preventDefault. Calling preventDefault
+    // will stop links from being activated.
+    onClick: function (event) {
+      for (var i = 0; i < clickbuster.coordinates.length; i += 2) {
+        var x = clickbuster.coordinates[i];
+        var y = clickbuster.coordinates[i + 1];
+        if (Math.abs(event.clientX - x) < 25 && Math.abs(event.clientY - y) < 25) {
+          event.stopPropagation ? event.stopPropagation() : (event.cancelBubble=true);
+          event.preventDefault ? event.preventDefault() : (event.returnValue=false);
+        }
       }
     }
   };
