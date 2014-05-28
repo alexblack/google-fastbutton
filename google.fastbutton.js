@@ -13,7 +13,9 @@
     if (el.addEventListener) {
       el.addEventListener(type, listener, useCapture);
       return {
-        destroy: function() { el.removeEventListener(type, listener, useCapture); }
+        destroy: function() {
+          el.removeEventListener(type, listener, useCapture);
+        }
       };
     } else {
       // see:
@@ -41,7 +43,9 @@
     this.handler = handler;
     this.useCapture = useCapture;
     if (isTouch) {
-      this.events.push(addListener(element, 'touchstart', this, this.useCapture));
+      this.events.push(
+        addListener(element, 'touchstart', this, this.useCapture)
+      );
     }
     this.events.push(addListener(element, 'click', this, this.useCapture));
   };
@@ -51,7 +55,11 @@
     for (var i = this.events.length - 1; i >= 0; i -= 1) {
       this.events[i].destroy();
     }
-    this.events = this.touchEvents = this.element = this.handler = this.fastButton = null;
+    this.events =
+    this.touchEvents =
+    this.element =
+    this.handler =
+    this.fastButton = null;
   };
 
   // acts as an event dispatcher
@@ -145,7 +153,8 @@
       for (var i = 0; i < clickbuster.coordinates.length; i += 2) {
         var x = clickbuster.coordinates[i];
         var y = clickbuster.coordinates[i + 1];
-        if (Math.abs(event.clientX - x) < 25 && Math.abs(event.clientY - y) < 25) {
+        if (Math.abs(event.clientX - x) < 25 &&
+          Math.abs(event.clientY - y) < 25) {
           if (event.stopPropagation) {
             event.stopPropagation();
           } else {
