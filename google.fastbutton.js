@@ -7,7 +7,8 @@
   // Also see:
   // http://stackoverflow.com/questions/6300136/trying-to-implement-googles-fast-button
 
-  // For IE8 and earlier compatibility: https://developer.mozilla.org/en/DOM/element.addEventListener
+  // For IE8 and earlier compatibility:
+  // https://developer.mozilla.org/en/DOM/element.addEventListener
   function addListener(el, type, listener, useCapture) {
     if (el.addEventListener) {
       el.addEventListener(type, listener, useCapture);
@@ -15,7 +16,8 @@
         destroy: function() { el.removeEventListener(type, listener, useCapture); }
       };
     } else {
-      // see: http://stackoverflow.com/questions/5198845/javascript-this-losing-context-in-ie
+      // see:
+      // http://stackoverflow.com/questions/5198845/javascript-this-losing-context-in-ie
       var handler = function(e) { listener.handleEvent(window.event, listener); }
       el.attachEvent('on' + type, handler);
 
@@ -123,7 +125,8 @@
   };
 
   if (isTouch) {
-    // Don't need to use our custom addListener function since we only bust clicks on touch devices
+    // Don't need to use our custom addListener function
+    // since we only bust clicks on touch devices
     document.addEventListener('click', clickbuster.onClick, true);
     clickbuster.coordinates = [];
   }
