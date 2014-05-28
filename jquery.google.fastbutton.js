@@ -28,7 +28,7 @@
 
   $.fn.fastClick = function(fn) {
     return $(this).each(function() {
-      return fn ? $(this).bind("fastClick", fn) : $(this).trigger("fastClick");
+      return fn ? $(this).bind('fastClick', fn) : $(this).trigger('fastClick');
     });
   };
 }(jQuery));
