@@ -10,10 +10,19 @@ module.exports = function(grunt) {
                     ]
                 }
             }
+        },
+
+        qunit: {
+            all: ['tests/*.html']
         }
     });
 
+    grunt.loadNpmTasks('grunt-contrib-qunit');
+
     grunt.loadNpmTasks('grunt-contrib-jshint');
 
-    grunt.registerTask('travis', 'jshint');
+    grunt.registerTask('travis', [
+        'jshint',
+        'qunit'
+    ]);
 };

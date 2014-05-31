@@ -1,3 +1,7 @@
+/* jshint
+quotmark: single
+ */
+
 (function() {
   'use strict';
 
