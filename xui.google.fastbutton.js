@@ -1,5 +1,15 @@
 /** Integrate google.fastbutton.js with XUI */
-(function(x$) {
+(function (factory) {
+  if (typeof exports === 'object') {
+    // CommonJS
+    module.exports = factory(require('xui'));
+  } else if (typeof define === 'function' && define.amd) {
+    // AMD
+    define(['xui'], factory);
+  } else {
+    factory(xui);
+  }
+}(function(x$) {
   "use strict";
 
   x$.fn.fastClick = function(handler, useCapture) {
@@ -14,5 +24,5 @@
       element.fastButton = null;
     });
   };
-}(xui));
+}));
 

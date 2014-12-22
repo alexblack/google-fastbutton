@@ -2,7 +2,20 @@
 quotmark: single
  */
 
-(function() {
+(function (root, factory) {
+  if (typeof exports === 'object') {
+    // CommonJS
+    module.exports = factory();
+  } else if (typeof define === 'function' && define.amd) {
+    // AMD
+    define(function() {
+      return (root.FastButton = factory());
+    });
+  } else {
+    // Global variable
+    root.FastButton = factory();
+  }
+}(this, function() {
   'use strict';
 
   // From:
@@ -39,7 +52,7 @@ quotmark: single
   var isTouch = 'ontouchstart' in window;
 
   // Construct the FastButton with a reference to the element and click handler.
-  window.FastButton = function (element, handler, useCapture) {
+  function FastButton(element, handler, useCapture) {
     // collect functions to call to cleanup events
     this.events = [];
     this.touchEvents = [];
@@ -52,10 +65,10 @@ quotmark: single
       );
     }
     this.events.push(addListener(element, 'click', this, this.useCapture));
-  };
+  }
 
   // Remove event handling when no longer needed for this button
-  window.FastButton.prototype.destroy = function() {
+  FastButton.prototype.destroy = function() {
     for (var i = this.events.length - 1; i >= 0; i -= 1) {
       this.events[i].destroy();
     }
@@ -66,7 +79,7 @@ quotmark: single
   };
 
   // acts as an event dispatcher
-  window.FastButton.prototype.handleEvent = function(event) {
+  FastButton.prototype.handleEvent = function(event) {
     switch (event.type) {
       case 'touchstart':
         this.onTouchStart(event);
@@ -87,7 +100,7 @@ quotmark: single
   // to touchmove and touchend events. Calling stopPropagation guarantees
   // that other behaviors don’t get a chance to handle the same click event.
   // This is executed at the beginning of touch.
-  window.FastButton.prototype.onTouchStart = function(event) {
+  FastButton.prototype.onTouchStart = function(event) {
     if (event.stopPropagation) {
       event.stopPropagation();
     } else {
@@ -105,7 +118,7 @@ quotmark: single
 
   // When/if touchmove event is invoked, check if the user has dragged past
   // the threshold of 10px.
-  window.FastButton.prototype.onTouchMove = function(event) {
+  FastButton.prototype.onTouchMove = function(event) {
     if (Math.abs(event.touches[0].clientX - this.startX) > 10 ||
       Math.abs(event.touches[0].clientY - this.startY) > 10) {
       this.reset(); //if he did, then cancel the touch event
@@ -114,7 +127,7 @@ quotmark: single
 
   // Invoke the actual click handler and prevent ghost clicks if
   // this was a touchend event.
-  window.FastButton.prototype.onClick = function(event) {
+  FastButton.prototype.onClick = function(event) {
     if (event.stopPropagation) {
       event.stopPropagation();
     } else {
@@ -130,7 +143,7 @@ quotmark: single
     return result;
   };
 
-  window.FastButton.prototype.reset = function() {
+  FastButton.prototype.reset = function() {
     for (var i = this.touchEvents.length - 1; i >= 0; i -= 1) {
       this.touchEvents[i].destroy();
     }
@@ -179,4 +192,6 @@ quotmark: single
     document.addEventListener('click', clickbuster.onClick, true);
     clickbuster.coordinates = [];
   }
-})(this);
+
+  return FastButton;
+}));

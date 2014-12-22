@@ -1,4 +1,14 @@
-(function($) {
+(function (factory) {
+  if (typeof exports === 'object') {
+    // CommonJS
+    module.exports = factory(require('jquery'));
+  } else if (typeof define === 'function' && define.amd) {
+    // AMD
+    define(['jquery'], factory);
+  } else {
+    factory(jQuery);
+  }
+}(function($) {
   'use strict';
 
   $.event.special.fastClick = {
@@ -31,5 +41,4 @@
       return fn ? $(this).bind('fastClick', fn) : $(this).trigger('fastClick');
     });
   };
-}(jQuery));
-
+}));
